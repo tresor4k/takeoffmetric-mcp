@@ -1,0 +1,92 @@
+{
+  "calc_concrete_slab": {
+    "id": "concrete-calculator",
+    "title": "Concrete Calculator",
+    "url": "https://takeoffmetric.com/concrete/concrete-calculator/",
+    "summary": "Cubic yards, bags, truck loads and weight for a slab, with multiple sections and an optional thickened edge."
+  },
+  "calc_concrete_cost": {
+    "id": "concrete-cost-calculator",
+    "title": "Concrete Cost Calculator",
+    "url": "https://takeoffmetric.com/concrete/concrete-cost-calculator/",
+    "summary": "Your own delivered price per cubic yard applied to the quarter-yard order quantity, with short-load fee, delivery, and bags against ready-mix."
+  },
+  "calc_rebar": {
+    "id": "concrete-rebar",
+    "title": "Rebar Calculator",
+    "url": "https://takeoffmetric.com/concrete/rebar-calculator/",
+    "summary": "Bar count each way, lap splices carried into the total length and into the order, stock bars packed into 20, 40 or 60 ft, weight, intersections and supports, for a slab grid or a continuous footing."
+  },
+  "calc_gravel": {
+    "id": "earthwork-gravel",
+    "title": "Gravel Calculator",
+    "url": "https://takeoffmetric.com/earthwork/gravel-calculator/",
+    "summary": "Cubic yards, short tons and metric tonnes of gravel, stone or rock, with a sourced density, the compaction conversion and a truck count."
+  },
+  "calc_fill_dirt": {
+    "id": "earthwork-fill-dirt",
+    "title": "Fill Dirt Calculator",
+    "url": "https://takeoffmetric.com/earthwork/fill-dirt-calculator/",
+    "summary": "Cubic yards, tons and truck loads of fill dirt, in or out, with the loose and in-place rows of a cited federal exhibit and no compaction applied unless you ask."
+  },
+  "calc_sand": {
+    "id": "earthwork-sand",
+    "title": "Sand Calculator",
+    "url": "https://takeoffmetric.com/earthwork/sand-calculator/",
+    "summary": "Cubic yards, short tons and a 50 lb bag count for sand, with the dry, damp and wet rows of a cited table and a screeded bedding depth."
+  },
+  "calc_topsoil": {
+    "id": "earthwork-topsoil",
+    "title": "Topsoil Calculator",
+    "url": "https://takeoffmetric.com/earthwork/topsoil-calculator/",
+    "summary": "Cubic yards, bags, weight and coverage of topsoil for a lawn, a top-dressing pass, a garden bed or a raised box, with the published depth of each job and the soil already on the ground subtracted."
+  },
+  "calc_cubic_yard": {
+    "id": "measure-cubic-yard",
+    "title": "Cubic Yard Calculator",
+    "url": "https://takeoffmetric.com/measure/cubic-yard-calculator/",
+    "summary": "Cubic yards, cubic feet and cubic meters over up to four areas of mixed shapes, the area a volume covers, the dug-versus-delivered swell, and bags and truck trips from your own sizes."
+  },
+  "calc_asphalt": {
+    "id": "paving-asphalt",
+    "title": "Asphalt Calculator",
+    "url": "https://takeoffmetric.com/paving/asphalt-calculator/",
+    "summary": "Short tons and metric tonnes of hot mix for up to three compacted courses over four areas, with a cited in-place unit weight and the spread rate a paving quote is written in."
+  },
+  "calc_board_foot": {
+    "id": "framing-board-foot",
+    "title": "Board Foot Calculator",
+    "url": "https://takeoffmetric.com/framing/board-foot-calculator/",
+    "summary": "Board feet for up to four lumber sizes on one order, with the whole-board-foot order quantity, lineal feet, pieces, cost per board foot and per 1,000, an optional nominal-versus-dressed volume, and the piece redrawn from what you typed."
+  },
+  "calc_roofing": {
+    "id": "roofing-calculator",
+    "title": "Roofing Calculator",
+    "url": "https://takeoffmetric.com/roofing/roofing-calculator/",
+    "summary": "Squares, shingle bundles, underlayment rolls, ridge cap and starter for up to four roof sections, from the plan footprint and the pitch, with every yield read off a named manufacturer sheet."
+  },
+  "calc_roof_pitch": {
+    "id": "roof-pitch-calculator",
+    "title": "Roof Pitch Calculator",
+    "url": "https://takeoffmetric.com/roofing/roof-pitch-calculator/",
+    "summary": "One slope written four ways and solved back from any of them — rise in 12, angle in degrees, grade in percent and the slope factor — plus the ridge height and the common rafter length once a span is typed."
+  },
+  "calc_fence": {
+    "id": "decks-fences-fence",
+    "title": "Fence Calculator",
+    "url": "https://takeoffmetric.com/decks-fences/fence-calculator/",
+    "summary": "Posts by type, rails, pickets, gates and post-hole concrete from one line: gate openings come off first, corners divide the run, and the hole is counted less the post standing in it."
+  },
+  "calc_duct": {
+    "id": "hvac-duct",
+    "title": "Duct Calculator",
+    "url": "https://takeoffmetric.com/hvac/duct-calculator/",
+    "summary": "Round and rectangular duct size from airflow and your friction rate or velocity limit, rounded up to a size you can buy with velocity and friction recomputed, what a duct carries, and a reducing trunk sized after each branch."
+  },
+  "calc_paver_base": {
+    "id": "masonry-paver-base",
+    "title": "Paver Base Calculator",
+    "url": "https://takeoffmetric.com/masonry/paver-base-calculator/",
+    "summary": "Crushed stone base, bedding sand and the excavation depth under a paver patio, driveway or street, with the minimum base thickness for each traffic class read off a masonry association's own application guide."
+  }
+}

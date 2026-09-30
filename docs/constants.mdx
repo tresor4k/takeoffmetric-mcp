@@ -1,0 +1,32 @@
+---
+title: Constants
+description: The search_constants tool and the table it reads.
+---
+
+# Constants
+
+`search_constants` reads a 148-row table of construction estimating constants shipped with the package
+(`vendor/constants.csv`). Each row gives a value, its unit, the SI value, the condition it applies to, and the
+publisher, title and URL of the document the value was read from.
+
+## Input
+
+| Key | Type | Meaning |
+|---|---|---|
+| `query` | string, optional | Case-insensitive substring matched against `category`, `material_or_item` and `quantity`. |
+| `category` | string, optional | One of `aggregates`, `asphalt`, `concrete`, `decking`, `earthwork`, `framing`, `hvac`, `landscaping`, `lumber`, `masonry`, `pavers`, `rebar`, `roofing`. |
+
+With no input the first 50 rows are returned.
+
+## Output
+
+`total_rows`, `matched`, `returned`, `truncated` (true when more than 50 rows matched), `license`, `dataset`, and
+`rows`. Each row carries `id`, `category`, `material_or_item`, `quantity`, `value`, `unit`, `value_si`, `unit_si`,
+`condition`, `source_publisher`, `source_title`, `source_url` and `used_by_tool_url`.
+
+Values are returned as written in the table, as strings, so no digit is reformatted.
+
+## License
+
+The table is licensed CC BY 4.0 and is published as a dataset at
+https://github.com/tresor4k/us-construction-estimating-constants. Each value remains attributed to its source.

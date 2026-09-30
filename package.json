@@ -1,0 +1,61 @@
+{
+  "name": "takeoffmetric-mcp",
+  "version": "0.1.0",
+  "mcpName": "io.github.tresor4k/takeoffmetric-mcp",
+  "description": "MCP server for construction takeoff calculators: concrete, rebar, gravel, fill, sand, topsoil, asphalt, board feet, roofing, roof pitch, fence, duct and paver base, plus a searchable table of sourced estimating constants.",
+  "homepage": "https://takeoffmetric.com/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tresor4k/takeoffmetric-mcp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tresor4k/takeoffmetric-mcp/issues"
+  },
+  "type": "module",
+  "main": "src/server.js",
+  "bin": {
+    "takeoffmetric-mcp": "bin/takeoffmetric-mcp.js"
+  },
+  "files": [
+    "bin",
+    "src",
+    "vendor",
+    "README.md",
+    "LICENSE",
+    "DATA_LICENSE.md"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "sync-engine": "node scripts/sync-engine.mjs",
+    "make-fixtures": "tsx scripts/make-fixtures.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "construction",
+    "estimating",
+    "takeoff",
+    "calculator",
+    "concrete",
+    "rebar",
+    "gravel",
+    "asphalt",
+    "roofing",
+    "fence",
+    "duct",
+    "claude"
+  ],
+  "author": "TakeoffMetric Editorial <contact@takeoffmetric.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0"
+  },
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.19.0"
+  }
+}

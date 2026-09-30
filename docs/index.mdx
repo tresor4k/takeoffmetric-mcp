@@ -1,0 +1,53 @@
+---
+title: Overview
+description: What takeoffmetric-mcp is, how to install it and how a call behaves.
+---
+
+# takeoffmetric-mcp
+
+`takeoffmetric-mcp` is a Model Context Protocol server over stdio. It exposes 15 construction calculators of
+[TakeoffMetric](https://takeoffmetric.com/), a tool that lists them, and a search over a table of estimating
+constants with their published sources.
+
+The calculators run the site's own engine, bundled unchanged in the package. A test suite replays fixtures computed
+from the engine source through the MCP tools and requires identical results.
+
+## Install
+
+Node.js 20 or later.
+
+```bash
+npx -y takeoffmetric-mcp
+```
+
+Claude Desktop (`claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "takeoffmetric": {
+      "command": "npx",
+      "args": ["-y", "takeoffmetric-mcp"]
+    }
+  }
+}
+```
+
+Claude Code:
+
+```bash
+claude mcp add takeoffmetric -- npx -y takeoffmetric-mcp
+```
+
+## How a call behaves
+
+- Every input is optional. A key left out takes the engine default, as an untouched form field does on the site.
+- `system` is `"imperial"` (default) or `"metric"`.
+- A length is a number in the unit named in the input description, or a string with its unit (`"20 ft 6 in"`).
+- An unknown key or an out-of-range value returns `isError: true` with one message per field.
+- A successful call returns JSON with `calculator`, `url`, `system`, `engine_version`, `revised`, `inputs_used`,
+  `primary`, `secondary`, `takeoff`, `warnings` and `assumptions`.
+
+Results are estimates. Confirm quantities with your plans, your supplier and your local code.
+
+See [Tools](/tools) for the list of calculators and [Constants](/constants) for the constants search.

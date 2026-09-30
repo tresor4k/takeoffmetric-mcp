@@ -1,0 +1,44 @@
+---
+title: Tools
+description: The 15 calculator tools of takeoffmetric-mcp and the page each one mirrors.
+---
+
+# Tools
+
+Each calculator tool runs the engine of one page of the site. The response's `url` field is that page.
+
+| Tool | Calculator | Page |
+|---|---|---|
+| `calc_concrete_slab` | Concrete Calculator | https://takeoffmetric.com/concrete/concrete-calculator/ |
+| `calc_concrete_cost` | Concrete Cost Calculator | https://takeoffmetric.com/concrete/concrete-cost-calculator/ |
+| `calc_rebar` | Rebar Calculator | https://takeoffmetric.com/concrete/rebar-calculator/ |
+| `calc_gravel` | Gravel Calculator | https://takeoffmetric.com/earthwork/gravel-calculator/ |
+| `calc_fill_dirt` | Fill Dirt Calculator | https://takeoffmetric.com/earthwork/fill-dirt-calculator/ |
+| `calc_sand` | Sand Calculator | https://takeoffmetric.com/earthwork/sand-calculator/ |
+| `calc_topsoil` | Topsoil Calculator | https://takeoffmetric.com/earthwork/topsoil-calculator/ |
+| `calc_cubic_yard` | Cubic Yard Calculator | https://takeoffmetric.com/measure/cubic-yard-calculator/ |
+| `calc_asphalt` | Asphalt Calculator | https://takeoffmetric.com/paving/asphalt-calculator/ |
+| `calc_board_foot` | Board Foot Calculator | https://takeoffmetric.com/framing/board-foot-calculator/ |
+| `calc_roofing` | Roofing Calculator | https://takeoffmetric.com/roofing/roofing-calculator/ |
+| `calc_roof_pitch` | Roof Pitch Calculator | https://takeoffmetric.com/roofing/roof-pitch-calculator/ |
+| `calc_fence` | Fence Calculator | https://takeoffmetric.com/decks-fences/fence-calculator/ |
+| `calc_duct` | Duct Calculator | https://takeoffmetric.com/hvac/duct-calculator/ |
+| `calc_paver_base` | Paver Base Calculator | https://takeoffmetric.com/masonry/paver-base-calculator/ |
+
+## list_calculators
+
+No input. Returns, for each calculator: `name`, `title`, `url`, `description`, `engine_version`, `revised` and
+`inputs` (the input keys). Call it first when you do not know which keys a calculator takes; the full bounds,
+options and defaults are in each tool's input schema.
+
+## Input schema
+
+The schema of a calculator is generated from the engine's input list when the server starts:
+
+- `length` inputs accept a number or a string and carry `minimum` / `maximum` in the unit named in the description;
+- `select` inputs carry their `enum`;
+- `toggle` inputs are booleans;
+- other inputs are numbers with their bounds;
+- `system` selects `"imperial"` or `"metric"`.
+
+Extra keys are refused, so a misspelled key cannot fall back to a default unnoticed.

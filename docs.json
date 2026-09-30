@@ -1,0 +1,9 @@
+{
+  "name": "TakeoffMetric MCP",
+  "description": "MCP server for construction takeoff calculators and a table of sourced estimating constants.",
+  "sidebar": [
+    ["Overview", "/"],
+    ["Tools", "/tools"],
+    ["Constants", "/constants"]
+  ]
+}
