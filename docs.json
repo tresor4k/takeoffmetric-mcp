@@ -2,8 +2,12 @@
   "name": "TakeoffMetric MCP",
   "description": "MCP server for construction takeoff calculators and a table of sourced estimating constants.",
   "sidebar": [
-    ["Overview", "/"],
-    ["Tools", "/tools"],
-    ["Constants", "/constants"]
+    {
+      "pages": [
+        { "title": "Overview", "href": "/" },
+        { "title": "Tools", "href": "/tools" },
+        { "title": "Constants", "href": "/constants" }
+      ]
+    }
   ]
 }
