@@ -3,7 +3,7 @@
   "name": "io.github.tresor4k/takeoffmetric-mcp",
   "title": "TakeoffMetric Construction Calculators",
   "description": "Construction takeoff calculators (concrete, gravel, asphalt, roofing) and sourced constants.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "websiteUrl": "https://takeoffmetric.com/",
   "repository": {
     "url": "https://github.com/tresor4k/takeoffmetric-mcp",
@@ -13,7 +13,7 @@
     {
       "registryType": "npm",
       "identifier": "takeoffmetric-mcp",
-      "version": "0.1.0",
+      "version": "0.1.1",
       "transport": {
         "type": "stdio"
       }

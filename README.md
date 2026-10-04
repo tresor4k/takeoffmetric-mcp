@@ -106,7 +106,7 @@ Response, copied from a run of this server (whitespace condensed):
   ],
   "takeoff": [
     {"key":"readymix","item":"Ready-mix concrete","qty":5.93,"unit":"cuyd","waste":10,"order":6.75,"orderUnit":"cuyd","note":"Rounded up to the nearest 0.25 cu yd."},
-    {"key":"bags","item":"Bagged concrete mix, 60 lb","qty":176,"unit":"cuft","waste":10,"order":392,"orderUnit":"bag","note":"0.45 cu ft per bag."},
+    …
     {"key":"trucks","item":"Ready-mix truck loads","qty":6.52,"unit":"cuyd","order":1,"orderUnit":"load","note":"10 cu yd per load (your assumption)."},
     {"key":"gravel","item":"Compacted base, 4″","qty":4.74,"unit":"cuyd","order":6.5,"orderUnit":"cuyd","note":"Loose volume ordered = compacted volume x 1.31 (3,570 / 2,730 lb/cu yd, FHWA Exhibit 5.1 A, gravel dry, average gradation; 1.17 uniformly graded, 1.49 well graded). For estimating purposes, ±33%: a highway embankment, not a plate-compacted base."},
     {"key":"cost","item":"Concrete cost at your price","qty":6.75,"unit":"cuyd","order":1113.75,"orderUnit":"usd","note":"6.75 cu yd x $165.00 / cu yd."}
@@ -118,7 +118,7 @@ Response, copied from a run of this server (whitespace condensed):
     "Volume = length x width x thickness; 1 cubic yard = 27 cubic feet.",
     "Waste allowance 10% applied to the net volume.",
     "Ready-mix rounded up to 0.25 cu yd; truck capacity 10 cu yd (editable).",
-    "Bag yield 0.45 cu ft per 60 lb bag of standard concrete mix.",
+    …
     "Unit weight 150 lb/cu ft (editable; normal-weight concrete runs about 140-155).",
     "Contraction joints at 24-36 times the slab thickness, capped at 15 ft (NRMCA CIP 6).",
     "Thickness, reinforcement and base depth come from your drawings or local code."

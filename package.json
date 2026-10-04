@@ -1,6 +1,6 @@
 {
   "name": "takeoffmetric-mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "mcpName": "io.github.tresor4k/takeoffmetric-mcp",
   "description": "MCP server for construction takeoff calculators: concrete, rebar, gravel, fill, sand, topsoil, asphalt, board feet, roofing, roof pitch, fence, duct and paver base, plus a searchable table of sourced estimating constants.",
   "homepage": "https://takeoffmetric.com/",

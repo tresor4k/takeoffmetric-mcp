@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.1.1 — 2026-10-04
 
 ### Changed
 - `vendor/constants.csv` is dataset 1.1.0: 55 rows whose publishers do not allow republication carry no value.
