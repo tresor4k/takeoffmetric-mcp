@@ -132,8 +132,10 @@ Response, copied from a run of this server (whitespace condensed):
   was built from, and every response carries the calculator's `engine_version` and `revised` date.
 - Each tool computes with the same engine as its page on the site. `calc_gravel`, for instance, runs the engine
   behind https://takeoffmetric.com/earthwork/gravel-calculator/.
-- `search_constants` reads `vendor/constants.csv` (148 rows). Each row gives the value, its unit, the SI value, the
-  condition it applies to, and the publisher, title and URL of the document it was read from.
+- `search_constants` reads `vendor/constants.csv` (dataset 1.1.0, 148 rows). Each row gives the value, its unit, the SI
+  value, the condition it applies to, and the publisher, title and URL of the document it was read from. 55 rows carry
+  no value because their publishers do not allow republication: they return `value: null`, `values_withheld: true`,
+  the publisher's domains in `withheld_hosts`, and the URL where the value can be read.
 - The site's methodology (tested formulas, assumptions shown on the page, sources as documents, versioned sheets) is
   at https://takeoffmetric.com/methodology/.
 
@@ -162,4 +164,5 @@ they rebuild `vendor/` and `test/fixtures.json` from the site's source repositor
 
 Server code: MIT. Calculation engine (`vendor/engine.mjs`): copyright TakeoffMetric, distributed with this package to run
 as part of it, not licensed for modification or separate redistribution. Both are set out in `LICENSE`.
-Constants table: CC BY 4.0, see `DATA_LICENSE.md`.
+Constants table: CC BY 4.0 for the compilation; federal values are public domain; any other value stays under its
+publisher's terms. See `DATA_LICENSE.md`.

@@ -147,7 +147,7 @@ const listCalculators = {
 
 const searchConstantsTool = {
   name: "search_constants",
-  description: `Searches the table of construction estimating constants (densities, yields, coverage, unit weights), each row with its value, unit, SI value, condition and published source. Returns at most ${MAX_ROWS} rows per call. ${DISCLAIMER}`,
+  description: `Searches the table of construction estimating constants (densities, yields, coverage, unit weights), each row with its value, unit, SI value, condition and published source. Rows whose publisher does not allow republication return value null with values_withheld true: read the value at source_url. Returns at most ${MAX_ROWS} rows per call. ${DISCLAIMER}`,
   inputSchema: {
     type: "object",
     properties: {

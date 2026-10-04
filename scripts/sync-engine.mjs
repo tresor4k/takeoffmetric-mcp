@@ -77,8 +77,9 @@ for (const calc of engine.CALCULATORS) {
 }
 writeFileSync(join(vendor, "registry.json"), `${JSON.stringify(registry, null, 2)}\n`);
 
-// 3. Constants table (CC BY 4.0, see DATA_LICENSE.md).
-copyFileSync(join(siteRepo, "open-data/construction-constants/constants.csv"), join(vendor, "constants.csv"));
+// 3. Constants table (see DATA_LICENSE.md): the published dataset, whose withheld rows carry no value.
+const dataset = resolve(root, process.env.TAKEOFFMETRIC_DATASET ?? "../TakeoffMetrics-open-data/us-construction-estimating-constants");
+copyFileSync(join(dataset, "constants.csv"), join(vendor, "constants.csv"));
 
 // 4. Provenance.
 const git = (...args) => execFileSync("git", ["-C", siteRepo, ...args], { encoding: "utf8" }).trim();

@@ -19,7 +19,21 @@ const RETURNED = [
   "source_title",
   "source_url",
   "used_by_tool_url",
+  "values_withheld",
+  "withheld_hosts",
 ];
+
+/** A withheld row carries no value: its publisher does not allow republication, so the reader goes to the source. */
+function toRow(r) {
+  const row = Object.fromEntries(RETURNED.map((key) => [key, r[key]]));
+  row.values_withheld = r.values_withheld === "true";
+  if (row.values_withheld) {
+    row.value = null;
+    row.value_si = null;
+    row.note = `This table does not republish this publisher's values: read the value at source_url (${r.source_url}).`;
+  }
+  return row;
+}
 
 /** RFC 4180 reader: quoted fields, doubled quotes, line breaks inside quotes. */
 export function parseCsv(text) {
@@ -61,7 +75,7 @@ export function parseCsv(text) {
 export const CONSTANTS = parseCsv(readFileSync(CSV_URL, "utf8"));
 export const CONSTANT_CATEGORIES = [...new Set(CONSTANTS.map((r) => r.category))].sort();
 
-/** Values are returned as written in the table (strings), so no digit is reformatted. */
+/** Values are returned as written in the table (strings), so no digit is reformatted; withheld rows return null. */
 export function searchConstants({ query, category } = {}) {
   const q = String(query ?? "").trim().toLowerCase();
   const cat = String(category ?? "").trim().toLowerCase();
@@ -75,8 +89,8 @@ export function searchConstants({ query, category } = {}) {
     matched: matched.length,
     returned: Math.min(matched.length, MAX_ROWS),
     truncated: matched.length > MAX_ROWS,
-    license: "CC BY 4.0",
+    license: "CC BY 4.0 for the compilation; each value stays under its publisher's terms (see source_url)",
     dataset: "https://github.com/tresor4k/us-construction-estimating-constants",
-    rows: matched.slice(0, MAX_ROWS).map((r) => Object.fromEntries(RETURNED.map((key) => [key, r[key]]))),
+    rows: matched.slice(0, MAX_ROWS).map(toRow),
   };
 }
