@@ -12,11 +12,28 @@ const errorResult = (message) => ({
   isError: true,
 });
 
+export const INSTRUCTIONS = [
+  "Construction takeoff calculators (concrete, rebar, gravel, fill dirt, sand, topsoil, cubic yards, asphalt, board feet, roofing, roof pitch, fence, duct, paver base) and a searchable table of sourced estimating constants.",
+  'Each calc_* tool takes its inputs in imperial or metric units through the "system" argument (default imperial); list_calculators gives the input keys of each one.',
+  "Results come from the same engine as the calculators on takeoffmetric.com, and each result carries the URL of its page.",
+  "Tools run locally and make no network requests.",
+  "Results are estimates: the user should confirm them with their plans, supplier and local code.",
+].join(" ");
+
 export function createServer() {
-  const server = new Server({ name: pkg.name, version: pkg.version }, { capabilities: { tools: {} } });
+  const server = new Server(
+    { name: pkg.name, version: pkg.version },
+    { capabilities: { tools: {} }, instructions: INSTRUCTIONS },
+  );
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
-    tools: tools.map((t) => ({ name: t.name, description: t.description, inputSchema: t.inputSchema })),
+    tools: tools.map((t) => ({
+      name: t.name,
+      title: t.title,
+      description: t.description,
+      inputSchema: t.inputSchema,
+      annotations: t.annotations,
+    })),
   }));
 
   server.setRequestHandler(CallToolRequestSchema, async (request) => {

@@ -34,6 +34,19 @@ test("tools/list returns 17 tools with valid JSON Schemas", async () => {
   }
 });
 
+test("initialize returns instructions and every tool a title and the four boolean annotations", async () => {
+  const instructions = client.getInstructions();
+  assert.equal(typeof instructions, "string");
+  assert.ok(instructions.trim().length > 0);
+  const expected = { readOnlyHint: true, destructiveHint: false, idempotentHint: true, openWorldHint: false };
+  const { tools } = await client.listTools();
+  for (const tool of tools) {
+    assert.equal(typeof tool.title, "string", tool.name);
+    assert.ok(tool.title.length > 0 && tool.title.length <= 40, `${tool.name}: ${tool.title}`);
+    assert.deepEqual(tool.annotations, expected, tool.name);
+  }
+});
+
 test("tools/call succeeds once per tool", async () => {
   const { tools } = await client.listTools();
   for (const tool of tools) {

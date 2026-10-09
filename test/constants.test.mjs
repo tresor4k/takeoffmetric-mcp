@@ -23,12 +23,12 @@ test("a withheld row returns no value and points to its source", () => {
     condition: "mixed concrete, approximate",
     source_publisher: "QUIKRETE",
     source_title: "Concrete Mix No. 1101 data sheet",
-    source_url: "https://www.quikrete.com/PDFs/DATA_SHEET-Concrete%20Mix%201101.pdf",
+    source_url: "https://www.quikrete.com/pdfs/data_sheet-concrete%20mix%201101.pdf",
     used_by_tool_url:
       "https://takeoffmetric.com/concrete/concrete-calculator/; https://takeoffmetric.com/concrete/footing-calculator/; https://takeoffmetric.com/concrete/concrete-cost-calculator/; https://takeoffmetric.com/decks-fences/fence-calculator/",
     values_withheld: true,
     withheld_hosts: "quikrete.com",
-    note: "This table does not republish this publisher's values: read the value at source_url (https://www.quikrete.com/PDFs/DATA_SHEET-Concrete%20Mix%201101.pdf).",
+    note: "This table does not republish this publisher's values: read the value at source_url (https://www.quikrete.com/pdfs/data_sheet-concrete%20mix%201101.pdf).",
   });
 });
 
