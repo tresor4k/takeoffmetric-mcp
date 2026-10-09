@@ -1,6 +1,6 @@
 # Data license — constants table
 
-`vendor/constants.csv` is a copy of version 1.1.0 of the dataset *US Construction Estimating Constants*, published at
+`vendor/constants.csv` is a copy of version 1.1.1 of the dataset *US Construction Estimating Constants*, published at
 https://github.com/tresor4k/us-construction-estimating-constants.
 
 It is **not** covered by the MIT license of the server code. It keeps its own terms:
@@ -13,6 +13,6 @@ It is **not** covered by the MIT license of the server code. It keeps its own te
 - **55 rows carry no value** (`values_withheld` = `true`): their publishers do not allow republication. Those rows keep the
   name of the quantity, its unit and the link to the source; `withheld_hosts` lists the domains concerned, and
   `search_constants` returns `value: null` with the instruction to read the value at `source_url`.
-- Cite as: TakeoffMetric Editorial, *US Construction Estimating Constants*, version 1.1.0, 2026, takeoffmetric.com.
+- Cite as: TakeoffMetric Editorial, *US Construction Estimating Constants*, version 1.1.1, 2026, takeoffmetric.com.
 
 The `search_constants` tool returns the source columns with every row so the attribution travels with the value.
