@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.1.2 — 2026-10-09
+
+### Added
+- Every tool has a `title` and explicit annotations: `readOnlyHint: true`, `destructiveHint: false`,
+  `idempotentHint: true`, `openWorldHint: false` (no tool calls the network or a model).
+- The server sends `instructions`: what it computes, units, the engine it shares with takeoffmetric.com, and that results
+  are to be confirmed against plans, supplier data and local code.
+
+### Changed
+- `vendor/constants.csv` is dataset 1.1.1: three source links that redirected now point to their final address, same
+  documents (QUIKRETE No. 1101 data sheet, NIST PS 20-20 Revision 1, archived GAF RESHR112 sell sheet). No value changed.
+
 ## 0.1.1 — 2026-10-04
 
 ### Changed

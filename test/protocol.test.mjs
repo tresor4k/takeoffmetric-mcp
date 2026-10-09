@@ -18,7 +18,7 @@ after(async () => {
 });
 
 test("initialize reports the package name and version", () => {
-  assert.deepEqual(client.getServerVersion(), { name: "takeoffmetric-mcp", version: "0.1.1" });
+  assert.deepEqual(client.getServerVersion(), { name: "takeoffmetric-mcp", version: "0.1.2" });
 });
 
 test("tools/list returns 17 tools with valid JSON Schemas", async () => {
