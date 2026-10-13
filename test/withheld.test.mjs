@@ -16,14 +16,16 @@ const byName = new Map(tools.map((t) => [t.name, t]));
 const call = (name, args) => byName.get(name).handler(args).payload;
 
 // The roofing product names (D172) and the publishers of the withheld rows.
-const BRAND = /gaf|timberline|feltbuster|seal-a-ridge|pro-start|hdz/i;
+const BRAND = /gaf|timberline|feltbuster|seal[-_ ]?a[-_ ]?ridge|pro[-_ ]?start|hdz/i;
 const PUBLISHERS =
   /quikrete|caterpillar|nucor|\bgaf\b|asphalt institute|minnesota asphalt|north bay|utah state|\busu\b|missouri|\btrex\b|\bAPA\b/i;
 
 // ------------------------------------------------------------------ withheld values, read from the engine
 const engineText = readFileSync(new URL("../vendor/engine.mjs", import.meta.url), "utf8");
-// the bundle renames the roofing identifiers (scripts/brands.mjs): FELTBUSTER_X -> MFR_X
-const symbolOf = (s) => s.trim().replace(/feltbuster|hdz/gi, "MFR");
+// the bundle renames the roofing identifiers (scripts/brands.mjs): SEAL_A_RIDGE_X -> MFR_RIDGE_X,
+// PRO_START_X -> MFR_STARTER_X, FELTBUSTER_X -> MFR_X
+const symbolOf = (s) =>
+  s.trim().replace(/SEAL_A_RIDGE/g, "MFR_RIDGE").replace(/PRO_START/g, "MFR_STARTER").replace(/feltbuster|hdz/gi, "MFR");
 const withheld = CONSTANTS.filter((r) => r.values_withheld === "true");
 const exprs = [...new Set(withheld.flatMap((r) => r.engine_symbol.split(";").map(symbolOf)))];
 const bases = [...new Set(exprs.map((e) => e.match(/^[A-Z_0-9]+/)[0]))].filter((b) => new RegExp(`\\bvar ${b} =`).test(engineText));

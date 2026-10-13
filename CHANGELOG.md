@@ -8,7 +8,8 @@
   (concrete slab, concrete cost, fence; replaces `bagSize` / `bag`), `baseDensity` and `beddingDensity` (paver base),
   `density` (gravel, sand), `plantWeight` (asphalt; `preset` removed), `stockLength` (rebar; replaces `stock`), the four
   roofing coverages, `eps` (duct). No sentence naming those publishers is returned.
-- `calc_roofing`: no manufacturer name or figure in schemas, descriptions, answers or `vendor/engine.mjs` (D172).
+- `calc_roofing`: no manufacturer name anywhere in the package; the withheld figures stay in the vendored engine under
+  anonymous constants and are never returned by a tool (D172).
 - Engine resynced from the site (concrete volume headline = net volume; PS 20-25; duct roughness credit).
 - `vendor/constants.csv` is dataset 1.2.0 (LUM-002 to LUM-016 cite NIST PS 20-25). Licence of the compilation unchanged.
 - Parity fixtures keep a SHA-256 of each engine answer instead of the answer.

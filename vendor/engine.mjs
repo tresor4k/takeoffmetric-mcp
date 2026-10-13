@@ -4942,12 +4942,12 @@ var boardFootSpec = {
 
 // src/data/reference/roofing.ts
 var MFR_BUNDLES_PER_SQUARE = 3;
-var SEAL_A_RIDGE_BUNDLES_PER_100_LF = 4;
-var PRO_START_LF_PER_BUNDLE = 120.33;
+var MFR_RIDGE_BUNDLES_PER_100_LF = 4;
+var MFR_STARTER_LF_PER_BUNDLE = 120.33;
 var MFR_SQUARES_PER_ROLL = 10;
 var MFR_SQFT_PER_ROLL = 1e3;
 var SQFT_PER_SQUARE = MFR_SQFT_PER_ROLL / MFR_SQUARES_PER_ROLL;
-var SEAL_A_RIDGE_LF_PER_BUNDLE = 100 / SEAL_A_RIDGE_BUNDLES_PER_100_LF;
+var MFR_RIDGE_LF_PER_BUNDLE = 100 / MFR_RIDGE_BUNDLES_PER_100_LF;
 var PITCH_RUN_IN = 12;
 var ROOF_FORMS = ["gable", "hip", "shed"];
 
@@ -5120,7 +5120,7 @@ var roofingInputs = [
     q: "rb",
     label: "Ridge cap, linear feet per bundle",
     kind: "count",
-    default: SEAL_A_RIDGE_LF_PER_BUNDLE,
+    default: MFR_RIDGE_LF_PER_BUNDLE,
     min: 1,
     max: 200,
     advanced: true,
@@ -5131,7 +5131,7 @@ var roofingInputs = [
     q: "sb",
     label: "Starter, linear feet per bundle",
     kind: "count",
-    default: PRO_START_LF_PER_BUNDLE,
+    default: MFR_STARTER_LF_PER_BUNDLE,
     min: 1,
     max: 500,
     advanced: true,
@@ -5177,8 +5177,8 @@ function parseRoofingInputs(raw, system = "imperial") {
       knownEave: optNum(values, "knownEave") ?? 0,
       bundlesPerSquare: num(values, "bundlesPerSquare", MFR_BUNDLES_PER_SQUARE),
       rollSquares: num(values, "rollSquares", MFR_SQUARES_PER_ROLL),
-      ridgeLfPerBundle: num(values, "ridgeLfPerBundle", SEAL_A_RIDGE_LF_PER_BUNDLE),
-      starterLfPerBundle: num(values, "starterLfPerBundle", PRO_START_LF_PER_BUNDLE),
+      ridgeLfPerBundle: num(values, "ridgeLfPerBundle", MFR_RIDGE_LF_PER_BUNDLE),
+      starterLfPerBundle: num(values, "starterLfPerBundle", MFR_STARTER_LF_PER_BUNDLE),
       starterOnRakes: bool(values, "starterRakes"),
       wastePct: num(values, "waste", 0),
       pricePerBundle: optNum(values, "priceBundle")
@@ -5271,8 +5271,8 @@ function computeRoofing(input) {
     knownEave: fin3(input.knownEave),
     bundlesPerSquare: fin3(input.bundlesPerSquare, MFR_BUNDLES_PER_SQUARE),
     rollSquares: fin3(input.rollSquares, MFR_SQUARES_PER_ROLL),
-    ridgeLfPerBundle: fin3(input.ridgeLfPerBundle, SEAL_A_RIDGE_LF_PER_BUNDLE),
-    starterLfPerBundle: fin3(input.starterLfPerBundle, PRO_START_LF_PER_BUNDLE),
+    ridgeLfPerBundle: fin3(input.ridgeLfPerBundle, MFR_RIDGE_LF_PER_BUNDLE),
+    starterLfPerBundle: fin3(input.starterLfPerBundle, MFR_STARTER_LF_PER_BUNDLE),
     wastePct: fin3(input.wastePct, 0),
     pricePerBundle: input.pricePerBundle === null ? null : fin3(input.pricePerBundle)
   };
