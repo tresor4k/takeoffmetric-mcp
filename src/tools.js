@@ -1,6 +1,7 @@
 import { readFileSync } from "node:fs";
 import { CALCULATORS } from "../vendor/engine.mjs";
 import { CONSTANT_CATEGORIES, MAX_ROWS, searchConstants } from "./constants.js";
+import { WITHHELD, scrubNames } from "./withheld.js";
 
 // Title, live URL and summary of each calculator, extracted from the site registry by scripts/sync-engine.mjs.
 const REGISTRY = JSON.parse(readFileSync(new URL("../vendor/registry.json", import.meta.url), "utf8"));
@@ -76,9 +77,15 @@ function inputSchema(calc) {
       description: "Unit system the inputs are typed in and the defaults are taken from.",
     },
   };
+  const w = WITHHELD[calc.name] ?? {};
   for (const spec of calc.spec.inputs) {
     if (spec.key === "system") throw new Error(`${calc.name}: an engine input is named "system"`);
+    if (w.drop?.includes(spec.key) || w.force?.[spec.key] !== undefined) continue;
     properties[spec.key] = propertySchema(spec);
+  }
+  // Refonte A: a value the dataset withholds is typed by the user, never defaulted (src/withheld.js).
+  for (const [key, { engine, ...param }] of Object.entries(w.params ?? {})) {
+    properties[key] = Object.fromEntries(Object.entries(param).filter(([, v]) => v !== undefined));
   }
   return { type: "object", properties, additionalProperties: false };
 }
@@ -94,16 +101,46 @@ function runCalculator(calc, args) {
     return fail(calc, system, [{ field: "system", message: 'system: must be "imperial" or "metric".' }]);
   }
   // A misspelled key would silently fall back to the engine default, so it is refused.
-  const known = new Set(calc.spec.inputs.map((s) => s.key));
+  const w = WITHHELD[calc.name] ?? {};
+  const known = new Set(Object.keys(inputSchema(calc).properties));
   const unknown = Object.keys(raw).filter((key) => !known.has(key));
   if (unknown.length) {
     return fail(calc, system, unknown.map((key) => ({ field: key, message: `${key}: unknown input for ${calc.name}.` })));
   }
-  const { inputs, errors } = calc.parse(raw, system);
+  const user = {};
+  for (const [key, param] of Object.entries(w.params ?? {})) {
+    if (raw[key] === undefined || raw[key] === null || raw[key] === "") continue;
+    const v = Number(raw[key]);
+    if (!Number.isFinite(v) || v < (param.minimum ?? 0) || (param.minimum === undefined && v <= 0) || v > (param.maximum ?? Infinity)) {
+      return fail(calc, system, [{ field: key, message: `${key}: must be a positive number read from your own product, plan or supplier.` }]);
+    }
+    user[key] = v;
+    if (!param.engine) delete raw[key];
+  }
+  const { inputs, errors } = calc.parse({ ...raw, ...(w.force ?? {}) }, system);
   if (errors.length) {
     return fail(calc, system, errors.map(({ field, message }) => ({ field, message })));
   }
+  w.prepare?.(inputs, user, system);
   const result = calc.spec.compute(inputs);
+  const answer = {
+    primary: result.primary,
+    secondary: [...result.secondary],
+    takeoff: result.takeoff.map((t) => ({ ...t })),
+    warnings: [...result.warnings],
+    assumptions: [...result.assumptions],
+  };
+  w.shape?.(answer, user, { system, inputs });
+  scrubNames(answer);
+  // the engine default of a withheld value never leaves the server, not even as an input echo
+  const inputsUsed = { ...inputs };
+  for (const key of [...(w.drop ?? []), ...Object.keys(w.force ?? {}), ...Object.keys(w.params ?? {})]) {
+    if (user[key] === undefined) delete inputsUsed[key];
+  }
+  if (w.drop?.includes("stock") && user.stockLength === undefined) delete inputsUsed.stockFt;
+  const needed = Object.entries(w.params ?? {})
+    .filter(([key]) => user[key] === undefined)
+    .map(([key, param]) => ({ key, description: param.description }));
   return {
     isError: false,
     payload: {
@@ -112,12 +149,9 @@ function runCalculator(calc, args) {
       system,
       engine_version: calc.spec.version,
       revised: calc.spec.revised,
-      inputs_used: inputs,
-      primary: result.primary,
-      secondary: result.secondary,
-      takeoff: result.takeoff,
-      warnings: result.warnings,
-      assumptions: result.assumptions,
+      inputs_used: inputsUsed,
+      ...answer,
+      ...(needed.length ? { needed } : {}),
     },
   };
 }
@@ -151,7 +185,7 @@ const listCalculators = {
         description: summaryOf(calc.name),
         engine_version: calc.spec.version,
         revised: calc.spec.revised,
-        inputs: calc.spec.inputs.map((s) => s.key),
+        inputs: Object.keys(inputSchema(calc).properties).filter((key) => key !== "system"),
       })),
     },
   }),

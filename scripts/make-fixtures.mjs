@@ -1,12 +1,16 @@
 // Maintainer script (run with tsx): computes the parity fixtures from the site's TypeScript SOURCE,
 // not from vendor/engine.mjs. The test suite replays them through the MCP handlers (bundle path).
+import { createHash } from "node:crypto";
 import { writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { debrand } from "./brands.mjs";
 import { CALCULATORS } from "./calculators.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const site = resolve(root, process.env.TAKEOFFMETRIC_SITE ?? "../TakeoffMetrics/site");
+
+const digest = (x) => createHash("sha256").update(debrand(JSON.stringify(x))).digest("hex");
 
 /** A non-default case derived from the input specs: the first three plain numeric fields, raised by half. */
 function vary(specs) {
@@ -50,16 +54,9 @@ for (const c of CALCULATORS) {
       label: `${label} ${system}`,
       system,
       args,
-      expected: {
-        engine_version: spec.version,
-        revised: spec.revised,
-        inputs_used: inputs,
-        primary: r.primary,
-        secondary: r.secondary,
-        takeoff: r.takeoff,
-        warnings: r.warnings,
-        assumptions: r.assumptions,
-      },
+      // A digest, not the answer: the engine defaults include values whose publishers do not allow
+      // republication (refonte A), so the fixture file carries none of them. Names rewritten as in the bundle.
+      sha256: digest({ version: spec.version, revised: spec.revised, inputs, result: r }),
     });
   }
 }

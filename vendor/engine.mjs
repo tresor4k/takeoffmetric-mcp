@@ -4941,12 +4941,12 @@ var boardFootSpec = {
 };
 
 // src/data/reference/roofing.ts
-var HDZ_BUNDLES_PER_SQUARE = 3;
+var MFR_BUNDLES_PER_SQUARE = 3;
 var SEAL_A_RIDGE_BUNDLES_PER_100_LF = 4;
 var PRO_START_LF_PER_BUNDLE = 120.33;
-var FELTBUSTER_SQUARES_PER_ROLL = 10;
-var FELTBUSTER_SQFT_PER_ROLL = 1e3;
-var SQFT_PER_SQUARE = FELTBUSTER_SQFT_PER_ROLL / FELTBUSTER_SQUARES_PER_ROLL;
+var MFR_SQUARES_PER_ROLL = 10;
+var MFR_SQFT_PER_ROLL = 1e3;
+var SQFT_PER_SQUARE = MFR_SQFT_PER_ROLL / MFR_SQUARES_PER_ROLL;
 var SEAL_A_RIDGE_LF_PER_BUNDLE = 100 / SEAL_A_RIDGE_BUNDLES_PER_100_LF;
 var PITCH_RUN_IN = 12;
 var ROOF_FORMS = ["gable", "hip", "shed"];
@@ -5097,7 +5097,7 @@ var roofingInputs = [
     q: "bs",
     label: "Bundles per square",
     kind: "count",
-    default: HDZ_BUNDLES_PER_SQUARE,
+    default: MFR_BUNDLES_PER_SQUARE,
     min: 1,
     max: 10,
     step: 1,
@@ -5109,7 +5109,7 @@ var roofingInputs = [
     q: "rs",
     label: "Squares per underlayment roll",
     kind: "count",
-    default: FELTBUSTER_SQUARES_PER_ROLL,
+    default: MFR_SQUARES_PER_ROLL,
     min: 1,
     max: 40,
     advanced: true,
@@ -5175,8 +5175,8 @@ function parseRoofingInputs(raw, system = "imperial") {
       knownArea: areaInSqm ? areaTyped : convert(areaTyped, "sqft", "sqm"),
       knownRidge: optNum(values, "knownRidge") ?? 0,
       knownEave: optNum(values, "knownEave") ?? 0,
-      bundlesPerSquare: num(values, "bundlesPerSquare", HDZ_BUNDLES_PER_SQUARE),
-      rollSquares: num(values, "rollSquares", FELTBUSTER_SQUARES_PER_ROLL),
+      bundlesPerSquare: num(values, "bundlesPerSquare", MFR_BUNDLES_PER_SQUARE),
+      rollSquares: num(values, "rollSquares", MFR_SQUARES_PER_ROLL),
       ridgeLfPerBundle: num(values, "ridgeLfPerBundle", SEAL_A_RIDGE_LF_PER_BUNDLE),
       starterLfPerBundle: num(values, "starterLfPerBundle", PRO_START_LF_PER_BUNDLE),
       starterOnRakes: bool(values, "starterRakes"),
@@ -5269,8 +5269,8 @@ function computeRoofing(input) {
     knownArea: fin3(input.knownArea),
     knownRidge: fin3(input.knownRidge),
     knownEave: fin3(input.knownEave),
-    bundlesPerSquare: fin3(input.bundlesPerSquare, HDZ_BUNDLES_PER_SQUARE),
-    rollSquares: fin3(input.rollSquares, FELTBUSTER_SQUARES_PER_ROLL),
+    bundlesPerSquare: fin3(input.bundlesPerSquare, MFR_BUNDLES_PER_SQUARE),
+    rollSquares: fin3(input.rollSquares, MFR_SQUARES_PER_ROLL),
     ridgeLfPerBundle: fin3(input.ridgeLfPerBundle, SEAL_A_RIDGE_LF_PER_BUNDLE),
     starterLfPerBundle: fin3(input.starterLfPerBundle, PRO_START_LF_PER_BUNDLE),
     wastePct: fin3(input.wastePct, 0),
@@ -5352,7 +5352,7 @@ function computeRoofing(input) {
     warnings.push({
       level: "info",
       code: "underlayment-laps",
-      message: 'The underlayment roll is a 10-square roll before laps: GAF FeltBuster prints "excludes laps". No lap allowance is added here because none was published.'
+      message: 'The underlayment roll is a 10-square roll before laps: the manufacturer the manufacturer prints "excludes laps". No lap allowance is added here because none was published.'
     });
   }
   const DASH4 = "—";
@@ -5429,7 +5429,7 @@ function computeRoofing(input) {
       note: `${formatNumber(orderSquares, 2)} squares x ${formatNumber(
         perSquare,
         2
-      )} bundles, rounded up. 3 bundles per square is GAF Timberline HDZ's own figure; change the field to match your wrapper.`
+      )} bundles, rounded up. 3 bundles per square is the manufacturer the manufacturer MFR's own figure; change the field to match your wrapper.`
     });
     takeoff.push({
       key: "underlayment",
@@ -5438,7 +5438,7 @@ function computeRoofing(input) {
       unit: areaUnit,
       order: rolls,
       orderUnit: "ea",
-      note: "GAF FeltBuster: 10 squares per roll, 1,000 sq ft, excludes laps. The laps are not in the figure and none is added here."
+      note: "the manufacturer the manufacturer: 10 squares per roll, 1,000 sq ft, excludes laps. The laps are not in the figure and none is added here."
     });
     if (ridgeCapLength > 0) {
       takeoff.push({
@@ -5448,7 +5448,7 @@ function computeRoofing(input) {
         unit: runUnit,
         order: ridgeCapBundles,
         orderUnit: "ea",
-        note: "GAF Seal-A-Ridge publishes 4 bundles per 100 linear feet; 100 / 4 = 25 linear feet per bundle, which is the default in the field."
+        note: "the manufacturer the manufacturer publishes 4 bundles per 100 linear feet; 100 / 4 = 25 linear feet per bundle, which is the default in the field."
       });
     }
     if (starterLength > 0) {
@@ -5459,7 +5459,7 @@ function computeRoofing(input) {
         unit: runUnit,
         order: starterBundles,
         orderUnit: "ea",
-        note: `GAF Pro-Start: approx. 120.33 lineal feet per bundle when split in half. ${i.starterOnRakes ? "Eaves and rakes." : "Eaves only; switch on rakes if your shingle's instructions ask for it."}`
+        note: `the manufacturer the manufacturer: approx. 120.33 lineal feet per bundle when split in half. ${i.starterOnRakes ? "Eaves and rakes." : "Eaves only; switch on rakes if your shingle's instructions ask for it."}`
       });
     }
     if (cost !== null) {
@@ -5480,7 +5480,7 @@ function computeRoofing(input) {
   }
   const assumptions = [
     "Pitch factor = sqrt(rise² + 12²) / 12; sloped area = plan area including overhangs x that factor. Exact for a gable and a hip alike when every plane carries the same pitch.",
-    "1 square = 100 sq ft, as GAF's FeltBuster sheet writes it (10 squares per roll = 1,000 sq ft)."
+    "1 square = 100 sq ft, as the manufacturer the manufacturer sheet writes it (10 squares per roll = 1,000 sq ft)."
   ];
   if (byArea) {
     assumptions.push("You typed the sloped area, so no geometry is assumed: ridge, hip and eave lengths are yours as well.");
@@ -5491,10 +5491,10 @@ function computeRoofing(input) {
     if (sections.length > 1) assumptions.push(`${sections.length} sections added together; overlapping planes are not detected.`);
   }
   assumptions.push(
-    `Bundles per square ${formatNumber(perSquare, 2)}${perSquare === HDZ_BUNDLES_PER_SQUARE ? " - GAF Timberline HDZ's published figure for that one product" : " - your figure"}.`
+    `Bundles per square ${formatNumber(perSquare, 2)}${perSquare === MFR_BUNDLES_PER_SQUARE ? " - the manufacturer the manufacturer MFR's published figure for that one product" : " - your figure"}.`
   );
   assumptions.push(
-    "Ridge cap 25 linear feet per bundle is GAF Seal-A-Ridge's 4 bundles per 100 linear feet divided out; starter 120.33 lineal feet per bundle is GAF Pro-Start's own number when the sheets are split in half."
+    "Ridge cap 25 linear feet per bundle is the manufacturer the manufacturer 4 bundles per 100 linear feet divided out; starter 120.33 lineal feet per bundle is the manufacturer the manufacturer own number when the sheets are split in half."
   );
   assumptions.push(
     wastePct > 0 ? `Waste ${wastePct}% on the roof area - your figure. No waste ladder by roof complexity is published anywhere we opened.` : "No waste is added: the sheet orders what it measured until you type your own percentage."

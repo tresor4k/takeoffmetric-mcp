@@ -1,12 +1,16 @@
-// Engine parity: fixtures computed from the site's TypeScript source (scripts/make-fixtures.mjs)
-// are replayed through the MCP tool handlers, which run the vendored bundle.
+// Engine parity: fixtures computed from the site's TypeScript source (scripts/make-fixtures.mjs) are replayed
+// through the vendored bundle. A fixture keeps a SHA-256 of the engine answer, never the answer itself: the engine
+// defaults include values whose publishers do not allow republication (refonte A, src/withheld.js).
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { test } from "node:test";
-import { tools } from "../src/tools.js";
+import { CALCULATORS } from "../vendor/engine.mjs";
+import { debrand } from "../scripts/brands.mjs";
 
 const { cases } = JSON.parse(readFileSync(new URL("./fixtures.json", import.meta.url), "utf8"));
-const byName = new Map(tools.map((t) => [t.name, t]));
+const byName = new Map(CALCULATORS.map((c) => [c.name, c]));
+const digest = (x) => createHash("sha256").update(debrand(JSON.stringify(x))).digest("hex");
 
 test("fixtures cover the 15 calculators with at least 45 cases", () => {
   assert.ok(cases.length >= 45, `only ${cases.length} cases`);
@@ -15,14 +19,11 @@ test("fixtures cover the 15 calculators with at least 45 cases", () => {
 
 for (const c of cases) {
   test(`${c.name}: ${c.label}`, () => {
-    const { payload, isError } = byName.get(c.name).handler({ ...c.args, system: c.system });
-    assert.equal(isError, false, JSON.stringify(payload.errors));
-    // Same JSON round trip as the fixture file and as the MCP text content.
-    const got = JSON.parse(JSON.stringify(payload));
-    assert.equal(got.calculator, c.name);
-    assert.equal(got.system, c.system);
-    for (const key of Object.keys(c.expected)) {
-      assert.deepEqual(got[key], c.expected[key], key);
-    }
+    const calc = byName.get(c.name);
+    const { inputs, errors } = calc.parse(c.args, c.system);
+    assert.deepEqual(errors, []);
+    const result = calc.spec.compute(inputs);
+    const got = digest(JSON.parse(JSON.stringify({ version: calc.spec.version, revised: calc.spec.revised, inputs, result })));
+    assert.equal(got, c.sha256);
   });
 }

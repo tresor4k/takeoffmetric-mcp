@@ -56,7 +56,9 @@ test("tools/call succeeds once per tool", async () => {
     if (tool.name.startsWith("calc_")) {
       assert.equal(payload.calculator, tool.name);
       assert.match(payload.url, /^https:\/\/takeoffmetric\.com\/[a-z-]+\/[a-z-]+\/$/);
-      assert.equal(typeof payload.primary.value, "number");
+      // refonte A: with no figure computable before the user types a withheld value, primary is null and `needed` says why
+      if (payload.primary === null) assert.ok(payload.needed.length > 0, `${tool.name}: no primary and nothing needed`);
+      else assert.equal(typeof payload.primary.value, "number");
       assert.ok(Array.isArray(payload.takeoff));
     }
   }

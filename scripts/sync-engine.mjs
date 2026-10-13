@@ -3,9 +3,10 @@
 // npm users never run this: vendor/ is committed and shipped.
 import { build } from "esbuild";
 import { execFileSync } from "node:child_process";
-import { copyFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { BRAND, debrand } from "./brands.mjs";
 import { CALCULATORS, EXCLUDED } from "./calculators.mjs";
 
 const ORIGIN = "https://takeoffmetric.com";
@@ -46,7 +47,18 @@ const result = await build({
   charset: "utf8",
   metafile: true,
   outfile: engineOut,
+  // D172: the roofing manufacturer's names are rewritten in memory; the site source is left untouched.
+  plugins: [
+    {
+      name: "no-brand",
+      setup(b) {
+        b.onLoad({ filter: /[\\/]src[\\/].*\.ts$/ }, (args) => ({ contents: debrand(readFileSync(args.path, "utf8")), loader: "ts" }));
+      },
+    },
+  ],
 });
+const brandLeft = readFileSync(engineOut, "utf8").match(BRAND);
+if (brandLeft) throw new Error(`vendor/engine.mjs: brand name "${brandLeft[0]}" left in the bundle`);
 
 const inputs = Object.keys(result.metafile.inputs).sort();
 const leaked = inputs.filter((f) => f.endsWith("data/tools.ts") || EXCLUDED.some((x) => f.endsWith(`formulas/${x}.ts`)));
