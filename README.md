@@ -64,64 +64,79 @@ Two more tools complete the server:
 Each calculator's input schema is generated at start-up from the engine's own input list, so keys, bounds, options
 and defaults are the ones of the matching form on the site.
 
-- Every input is optional. A key you leave out takes the engine default, as an untouched form field does.
+- Every input is optional. A key you leave out takes the engine default, as an untouched form field does, with one
+  exception: a value whose publisher does not allow republication is never a default (see below).
 - `system` is `"imperial"` (default) or `"metric"`. It sets the unit the numbers are typed in and the defaults.
 - A length is a number in the unit named in its description, or a string that carries its unit, such as `"20 ft 6 in"`.
 - An unknown key or an out-of-range value returns `isError: true` with one message per field. Nothing is computed from a clamped value.
 
+### Values you type (0.2.0)
+
+Some site defaults are publisher figures that this package does not republish (dataset rows with `values_withheld`).
+They are inputs with no default, read off your own product, plan or supplier. Without them a tool returns what it can
+compute (geometry, volumes) and a `needed` list of the missing inputs.
+
+| Tool | Inputs with no default |
+|---|---|
+| `calc_concrete_slab`, `calc_concrete_cost`, `calc_fence` | `bagYield` (cu ft or L per bag; the bag-weight select is gone) |
+| `calc_paver_base` | `baseDensity`, `beddingDensity` |
+| `calc_gravel`, `calc_sand` | `density` |
+| `calc_asphalt` | `plantWeight` (the two published presets are gone) |
+| `calc_rebar` | `stockLength` (the stock-length select is gone) |
+| `calc_roofing` | `bundlesPerSquare`, `rollSquares`, `ridgeLfPerBundle`, `starterLfPerBundle` |
+| `calc_duct` | `eps` (roughness; without it no size) |
+
 ### Output
 
 A JSON text block: `calculator`, `url`, `system`, `engine_version`, `revised`, `inputs_used`, `primary`, `secondary`,
-`takeoff`, `warnings`, `assumptions`. `inputs_used` is the engine's normalized input (lengths in metres). `assumptions`
+`takeoff`, `warnings`, `assumptions`, and `needed` when an input above is missing. `inputs_used` is the engine's normalized input (lengths in metres). `assumptions`
 lists what the result rests on, and `warnings` carries the cautions the page would show.
 
 ## Worked example
 
-Request (`tools/call`, tool `calc_concrete_slab`):
+Request (`tools/call`, tool `calc_concrete_slab`). `bagYield` is the yield printed on the bag you buy (0.5 cu ft here, a
+synthetic figure): without it the answer has no bag count and lists `bagYield` in `needed`.
 
 ```json
-{"length":24,"width":16,"thickness":"5 in","price":165}
+{"length":24,"width":16,"thickness":"5 in","price":165,"bagYield":0.5}
 ```
 
-Response, copied from a run of this server (whitespace condensed):
+Response, copied from a run of this server (0.2.0):
 
 ```json
 {
   "calculator": "calc_concrete_slab",
   "url": "https://takeoffmetric.com/concrete/concrete-calculator/",
   "system": "imperial",
-  "engine_version": "1.2.0",
-  "revised": "2026-09-19",
-  "inputs_used": {"system":"imperial","sections":[{"length":7.315200000000001,"width":4.8768},{"length":0,"width":0},{"length":0,"width":0}],"thickness":0.127,"wastePct":10,"bagSize":"60","pricePerCuYd":165,"thickenedEdge":false,"edgeDepth":0.30479999999999996,"edgeWidth":0.30479999999999996,"gravelDepth":0.1016,"unitWeight":150,"truckCuYd":10,"minLoadCuYd":null,"shortLoadFee":null},
-  "primary": {"value":6.52,"unit":"cuyd","label":"Concrete volume","precision":2},
+  "engine_version": "1.3.0",
+  "revised": "2026-10-01",
+  "inputs_used": {"system":"imperial","sections":[{"length":7.315200000000001,"width":4.8768},{"length":0,"width":0},{"length":0,"width":0}],"thickness":0.127,"wastePct":10,"pricePerCuYd":165,"thickenedEdge":false,"edgeDepth":0.30479999999999996,"edgeWidth":0.30479999999999996,"gravelDepth":0.1016,"unitWeight":150,"truckCuYd":10,"minLoadCuYd":null,"shortLoadFee":null},
+  "primary": {"value":5.93,"unit":"cuyd","label":"Concrete volume","precision":2},
   "secondary": [
     {"value":6.75,"unit":"cuyd","label":"Order quantity","precision":2},
-    {"value":176,"unit":"cuft","label":"Concrete volume","precision":1},
+    {"value":160,"unit":"cuft","label":"Concrete volume","precision":1},
     {"value":384,"unit":"sqft","label":"Slab area","precision":0},
     {"value":26400,"unit":"lb","label":"Concrete weight","precision":0},
-    {"value":392,"unit":"bag","label":"60 lb bags","precision":0},
     {"value":1,"unit":"load","label":"Truck loads","precision":0},
     {"value":10,"unit":"ft","label":"Control-joint spacing","display":"10'-0″ to 15'-0″"},
-    {"value":1113.75,"unit":"usd","label":"Estimated concrete cost","precision":2}
+    {"value":1113.75,"unit":"usd","label":"Estimated concrete cost","precision":2},
+    {"value":352,"unit":"bag","label":"Bags","precision":0}
   ],
   "takeoff": [
     {"key":"readymix","item":"Ready-mix concrete","qty":5.93,"unit":"cuyd","waste":10,"order":6.75,"orderUnit":"cuyd","note":"Rounded up to the nearest 0.25 cu yd."},
-    …
     {"key":"trucks","item":"Ready-mix truck loads","qty":6.52,"unit":"cuyd","order":1,"orderUnit":"load","note":"10 cu yd per load (your assumption)."},
     {"key":"gravel","item":"Compacted base, 4″","qty":4.74,"unit":"cuyd","order":6.5,"orderUnit":"cuyd","note":"Loose volume ordered = compacted volume x 1.31 (3,570 / 2,730 lb/cu yd, FHWA Exhibit 5.1 A, gravel dry, average gradation; 1.17 uniformly graded, 1.49 well graded). For estimating purposes, ±33%: a highway embankment, not a plate-compacted base."},
     {"key":"cost","item":"Concrete cost at your price","qty":6.75,"unit":"cuyd","order":1113.75,"orderUnit":"usd","note":"6.75 cu yd x $165.00 / cu yd."}
   ],
-  "warnings": [
-    {"level":"caution","code":"too-many-bags","message":"392 bags is a day of mixing. Price a ready-mix delivery instead."}
-  ],
+  "warnings": [],
   "assumptions": [
     "Volume = length x width x thickness; 1 cubic yard = 27 cubic feet.",
     "Waste allowance 10% applied to the net volume.",
     "Ready-mix rounded up to 0.25 cu yd; truck capacity 10 cu yd (editable).",
-    …
     "Unit weight 150 lb/cu ft (editable; normal-weight concrete runs about 140-155).",
     "Contraction joints at 24-36 times the slab thickness, capped at 15 ft (NRMCA CIP 6).",
-    "Thickness, reinforcement and base depth come from your drawings or local code."
+    "Thickness, reinforcement and base depth come from your drawings or local code.",
+    "Bags = volume / the bag yield you entered (0.5 cu ft a bag), rounded up."
   ]
 }
 ```
