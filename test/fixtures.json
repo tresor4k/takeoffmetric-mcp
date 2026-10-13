@@ -6,8 +6,8 @@
    "system": "imperial",
    "args": {},
    "expected": {
-    "engine_version": "1.2.0",
-    "revised": "2026-09-19",
+    "engine_version": "1.3.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "imperial",
      "sections": [
@@ -38,7 +38,7 @@
      "shortLoadFee": null
     },
     "primary": {
-     "value": 3.26,
+     "value": 2.96,
      "unit": "cuyd",
      "label": "Concrete volume",
      "precision": 2
@@ -51,7 +51,7 @@
       "precision": 2
      },
      {
-      "value": 88,
+      "value": 80,
       "unit": "cuft",
       "label": "Concrete volume",
       "precision": 1
@@ -151,8 +151,8 @@
    "system": "metric",
    "args": {},
    "expected": {
-    "engine_version": "1.2.0",
-    "revised": "2026-09-19",
+    "engine_version": "1.3.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "metric",
      "sections": [
@@ -183,7 +183,7 @@
      "shortLoadFee": null
     },
     "primary": {
-     "value": 2.376,
+     "value": 2.16,
      "unit": "cum",
      "label": "Concrete volume",
      "precision": 2
@@ -294,8 +294,8 @@
     "waste": 15
    },
    "expected": {
-    "engine_version": "1.2.0",
-    "revised": "2026-09-19",
+    "engine_version": "1.3.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "imperial",
      "sections": [
@@ -326,7 +326,7 @@
      "shortLoadFee": null
     },
     "primary": {
-     "value": 7.67,
+     "value": 6.67,
      "unit": "cuyd",
      "label": "Concrete volume",
      "precision": 2
@@ -339,7 +339,7 @@
       "precision": 2
      },
      {
-      "value": 207,
+      "value": 180,
       "unit": "cuft",
       "label": "Concrete volume",
       "precision": 1
@@ -443,8 +443,8 @@
     "waste": 15
    },
    "expected": {
-    "engine_version": "1.2.0",
-    "revised": "2026-09-19",
+    "engine_version": "1.3.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "metric",
      "sections": [
@@ -475,7 +475,7 @@
      "shortLoadFee": null
     },
     "primary": {
-     "value": 62.1,
+     "value": 54,
      "unit": "cum",
      "label": "Concrete volume",
      "precision": 2
@@ -587,8 +587,8 @@
    "system": "imperial",
    "args": {},
    "expected": {
-    "engine_version": "1.0.0",
-    "revised": "2026-09-20",
+    "engine_version": "1.1.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "imperial",
      "shape": "slab",
@@ -610,10 +610,11 @@
      "delivery": null
     },
     "primary": {
-     "value": 5.43,
+     "value": 4.94,
      "unit": "cuyd",
      "label": "Concrete volume",
-     "precision": 2
+     "precision": 2,
+     "display": "4.94 cu yd (133.33 cu ft)"
     },
     "secondary": [
      {
@@ -621,13 +622,6 @@
       "unit": "cuyd",
       "label": "Order quantity",
       "precision": 2
-     },
-     {
-      "value": 4.94,
-      "unit": "cuyd",
-      "label": "Net volume",
-      "precision": 2,
-      "display": "4.94 cu yd (133.33 cu ft)"
      },
      {
       "value": 400,
@@ -688,8 +682,8 @@
    "system": "metric",
    "args": {},
    "expected": {
-    "engine_version": "1.0.0",
-    "revised": "2026-09-20",
+    "engine_version": "1.1.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "metric",
      "shape": "slab",
@@ -711,7 +705,7 @@
      "delivery": null
     },
     "primary": {
-     "value": 3.96,
+     "value": 3.6,
      "unit": "cum",
      "label": "Concrete volume",
      "precision": 2
@@ -721,12 +715,6 @@
       "value": 4.014,
       "unit": "cum",
       "label": "Order quantity",
-      "precision": 2
-     },
-     {
-      "value": 3.6,
-      "unit": "cum",
-      "label": "Net volume",
       "precision": 2
      },
      {
@@ -792,8 +780,8 @@
     "footLength": 60
    },
    "expected": {
-    "engine_version": "1.0.0",
-    "revised": "2026-09-20",
+    "engine_version": "1.1.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "imperial",
      "shape": "slab",
@@ -815,10 +803,11 @@
      "delivery": null
     },
     "primary": {
-     "value": 12.22,
+     "value": 11.11,
      "unit": "cuyd",
      "label": "Concrete volume",
-     "precision": 2
+     "precision": 2,
+     "display": "11.11 cu yd (300 cu ft)"
     },
     "secondary": [
      {
@@ -826,13 +815,6 @@
       "unit": "cuyd",
       "label": "Order quantity",
       "precision": 2
-     },
-     {
-      "value": 11.11,
-      "unit": "cuyd",
-      "label": "Net volume",
-      "precision": 2,
-      "display": "11.11 cu yd (300 cu ft)"
      },
      {
       "value": 900,
@@ -897,8 +879,8 @@
     "footLength": 60
    },
    "expected": {
-    "engine_version": "1.0.0",
-    "revised": "2026-09-20",
+    "engine_version": "1.1.0",
+    "revised": "2026-10-01",
     "inputs_used": {
      "system": "metric",
      "shape": "slab",
@@ -920,7 +902,7 @@
      "delivery": null
     },
     "primary": {
-     "value": 99,
+     "value": 90,
      "unit": "cum",
      "label": "Concrete volume",
      "precision": 2
@@ -930,12 +912,6 @@
       "value": 99.01,
       "unit": "cum",
       "label": "Order quantity",
-      "precision": 2
-     },
-     {
-      "value": 90,
-      "unit": "cum",
-      "label": "Net volume",
       "precision": 2
      },
      {
@@ -7168,7 +7144,7 @@
      "Velocity pressure VP = (V / 4005)², V in fpm, VP in in. wg (PNNL, standard air at 70 °F and 29.92 in Hg).",
      "Friction: loss per 100 ft = f × (100 / D in ft) × VP (Darcy), f by Colebrook iterated from a Haaland first guess (Purdue).",
      "Reynolds number with μ = 3.679 × 10⁻⁷ lb·s/ft² at 70 °F: NASA's 3.62 × 10⁻⁷ at 59 °F carried to 70 °F by Sutherland's law.",
-     "Roughness 0.0003 ft (0.09 mm), galvanized steel as ASHRAE gives it (Chen et al., 2012). Another material takes its own roughness.",
+     "Roughness 0.0003 ft (0.09 mm), ASHRAE's galvanized fitting value (Liu et al., 2012), assumed for straight duct. Type your own.",
      "The friction rate, 0.08 in. wg / 100 ft, is your design input: no rate is recommended here.",
      "Sizes round up by 1 in, then velocity and friction are computed again at the size you buy.",
      "Rectangular duct: friction through Huebscher's equivalent round, velocity through the actual area (McGill).",
@@ -7265,7 +7241,7 @@
      "Velocity pressure VP = (V / 4005)², V in fpm, VP in in. wg (PNNL, standard air at 70 °F and 29.92 in Hg).",
      "Friction: loss per 100 ft = f × (100 / D in ft) × VP (Darcy), f by Colebrook iterated from a Haaland first guess (Purdue).",
      "Reynolds number with μ = 3.679 × 10⁻⁷ lb·s/ft² at 70 °F: NASA's 3.62 × 10⁻⁷ at 59 °F carried to 70 °F by Sutherland's law.",
-     "Roughness 0.0003 ft (0.09 mm), galvanized steel as ASHRAE gives it (Chen et al., 2012). Another material takes its own roughness.",
+     "Roughness 0.0003 ft (0.09 mm), ASHRAE's galvanized fitting value (Liu et al., 2012), assumed for straight duct. Type your own.",
      "The friction rate, 0.654 Pa/m, is your design input: no rate is recommended here.",
      "Sizes round up by 1 in, then velocity and friction are computed again at the size you buy.",
      "Rectangular duct: friction through Huebscher's equivalent round, velocity through the actual area (McGill).",
@@ -7366,7 +7342,7 @@
      "Velocity pressure VP = (V / 4005)², V in fpm, VP in in. wg (PNNL, standard air at 70 °F and 29.92 in Hg).",
      "Friction: loss per 100 ft = f × (100 / D in ft) × VP (Darcy), f by Colebrook iterated from a Haaland first guess (Purdue).",
      "Reynolds number with μ = 3.679 × 10⁻⁷ lb·s/ft² at 70 °F: NASA's 3.62 × 10⁻⁷ at 59 °F carried to 70 °F by Sutherland's law.",
-     "Roughness 0.0003 ft (0.09 mm), galvanized steel as ASHRAE gives it (Chen et al., 2012). Another material takes its own roughness.",
+     "Roughness 0.0003 ft (0.09 mm), ASHRAE's galvanized fitting value (Liu et al., 2012), assumed for straight duct. Type your own.",
      "The friction rate, 0.12 in. wg / 100 ft, is your design input: no rate is recommended here.",
      "Sizes round up by 1 in, then velocity and friction are computed again at the size you buy.",
      "Rectangular duct: friction through Huebscher's equivalent round, velocity through the actual area (McGill).",
@@ -7467,7 +7443,7 @@
      "Velocity pressure VP = (V / 4005)², V in fpm, VP in in. wg (PNNL, standard air at 70 °F and 29.92 in Hg).",
      "Friction: loss per 100 ft = f × (100 / D in ft) × VP (Darcy), f by Colebrook iterated from a Haaland first guess (Purdue).",
      "Reynolds number with μ = 3.679 × 10⁻⁷ lb·s/ft² at 70 °F: NASA's 3.62 × 10⁻⁷ at 59 °F carried to 70 °F by Sutherland's law.",
-     "Roughness 0.0003 ft (0.09 mm), galvanized steel as ASHRAE gives it (Chen et al., 2012). Another material takes its own roughness.",
+     "Roughness 0.0003 ft (0.09 mm), ASHRAE's galvanized fitting value (Liu et al., 2012), assumed for straight duct. Type your own.",
      "The friction rate, 0.981 Pa/m, is your design input: no rate is recommended here.",
      "Sizes round up by 1 in, then velocity and friction are computed again at the size you buy.",
      "Rectangular duct: friction through Huebscher's equivalent round, velocity through the actual area (McGill).",

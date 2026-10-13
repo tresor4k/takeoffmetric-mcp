@@ -1,5 +1,6 @@
 // vendor/engine.mjs - Copyright (c) 2026 TakeoffMetric. All rights reserved.
 // Distributed with takeoffmetric-mcp so the server can run. Not covered by the MIT license of this package: see LICENSE.
+
 // src/engine/units.ts
 var IN_TO_M = 0.0254;
 var FT_TO_M = 0.3048;
@@ -353,8 +354,8 @@ var READYMIX_INCREMENT_CUYD = 0.25;
 
 // src/engine/formulas/concrete/slab.ts
 var SLAB_ID = "concrete-calculator";
-var SLAB_VERSION = "1.2.0";
-var SLAB_REVISED = "2026-09-19";
+var SLAB_VERSION = "1.3.0";
+var SLAB_REVISED = "2026-10-01";
 var MAX_SECTIONS = 3;
 var CUYD_TO_M3 = 0.764554857984;
 var G_SECTIONS = { id: "sections", label: "Extra sections" };
@@ -680,7 +681,7 @@ function computeSlab(input) {
       message: "Over 500 cubic yards. Re-check your units before ordering."
     });
   }
-  const primary = metric ? { value: round(volumeWithWaste, 3), unit: "cum", label: "Concrete volume", precision: 2 } : { value: round(cuyd, 2), unit: "cuyd", label: "Concrete volume", precision: 2 };
+  const primary = metric ? { value: round(netVolume, 3), unit: "cum", label: "Concrete volume", precision: 2 } : { value: round(netCuyd, 2), unit: "cuyd", label: "Concrete volume", precision: 2 };
   const secondary = metric ? [
     { value: round(orderCuYd * CUYD_TO_M3, 2), unit: "cum", label: "Order quantity", precision: 2 },
     { value: round(area, 2), unit: "sqm", label: "Slab area", precision: 2 },
@@ -689,7 +690,7 @@ function computeSlab(input) {
     { value: trucks, unit: "load", label: "Truck loads", precision: 0 }
   ] : [
     { value: orderCuYd, unit: "cuyd", label: "Order quantity", precision: 2 },
-    { value: round(cuft, 2), unit: "cuft", label: "Concrete volume", precision: 1 },
+    { value: round(netVolume * M3_TO_CUFT, 2), unit: "cuft", label: "Concrete volume", precision: 1 },
     { value: round(convert(area, "sqm", "sqft"), 1), unit: "sqft", label: "Slab area", precision: 0 },
     { value: round(massLb, 0), unit: "lb", label: "Concrete weight", precision: 0 },
     { value: bags, unit: "bag", label: `${i.bagSize} lb bags`, precision: 0 },
@@ -821,8 +822,8 @@ var BAG_ORDER = ["90", "80", "60", "50", "40"];
 var BAG_90_NOTE = "regional availability";
 var ORDER_STEP_CUYD = 0.25;
 var CONCRETE_COST_ID = "concrete-cost-calculator";
-var CONCRETE_COST_VERSION = "1.0.0";
-var CONCRETE_COST_REVISED = "2026-09-20";
+var CONCRETE_COST_VERSION = "1.1.0";
+var CONCRETE_COST_REVISED = "2026-10-01";
 var COST_SHAPES = ["slab", "footing", "column"];
 var CUYD_TO_M32 = 0.764554857984;
 function finite2(value, fallback = 0) {
@@ -1094,20 +1095,19 @@ function computeConcreteCost(input) {
   }
   const netLine = metric ? `${formatNumber(netVolume, 3)} m³` : i.shape === "slab" ? `${formatNumber(areaSqFt ?? 0, 2)} sq ft × ${formatNumber(fromBase(i.thickness, "in"), 2)} in ÷ 12 = ${formatNumber(netCuFt, 2)} cu ft` : i.shape === "footing" ? `${formatNumber(fromBase(i.footLength, "ft"), 2)} ft × ${formatNumber(fromBase(i.footWidth, "in"), 2)} in × ${formatNumber(fromBase(i.footDepth, "in"), 2)} in ÷ 144 = ${formatNumber(netCuFt, 2)} cu ft` : `${i.count} × π × (${formatNumber(fromBase(i.diameter, "in"), 2)} in ÷ 24)² × ${formatNumber(fromBase(i.height, "ft"), 2)} ft = ${formatNumber(netCuFt, 2)} cu ft`;
   const orderNote = `${netLine}${metric ? "" : ", ÷ 27"}, +${formatNumber(i.wastePct, 0)} %, rounded up to the next ${ORDER_STEP_CUYD} cu yd.`;
-  const volumeQuantity = metric ? { value: round(volumeWithWaste, 3), unit: "cum", label: "Concrete volume", precision: 2 } : { value: round(cuYdWithWaste, 2), unit: "cuyd", label: "Concrete volume", precision: 2 };
+  const volumeQuantity = metric ? { value: round(netVolume, 3), unit: "cum", label: "Concrete volume", precision: 2 } : {
+    value: round(netCuYd, 2),
+    unit: "cuyd",
+    label: "Concrete volume",
+    precision: 2,
+    display: `${formatNumber(netCuYd, 2)} cu yd (${formatNumber(netCuFt, 2)} cu ft)`
+  };
   const primary = readyMixCost !== null ? { value: readyMixCost, unit: "usd", label: "Ready-mix cost", precision: 2 } : bagsCost !== null ? { value: bagsCost, unit: "usd", label: "Bagged cost", precision: 2 } : volumeQuantity;
   const secondary = [
-    metric ? { value: round(orderVolume, 3), unit: "cum", label: "Order quantity", precision: 2 } : { value: orderCuYd, unit: "cuyd", label: "Order quantity", precision: 2 },
-    metric ? { value: round(netVolume, 3), unit: "cum", label: "Net volume", precision: 2 } : {
-      value: round(netCuYd, 2),
-      unit: "cuyd",
-      label: "Net volume",
-      precision: 2,
-      display: `${formatNumber(netCuYd, 2)} cu yd (${formatNumber(netCuFt, 2)} cu ft)`
-    }
+    metric ? { value: round(orderVolume, 3), unit: "cum", label: "Order quantity", precision: 2 } : { value: orderCuYd, unit: "cuyd", label: "Order quantity", precision: 2 }
   ];
   if (readyMixCost !== null || bagsCost !== null) {
-    secondary.splice(1, 0, volumeQuantity);
+    secondary.push(volumeQuantity);
   }
   if (readyMixCost !== null && bagsCost !== null) {
     secondary.splice(2, 0, { value: bagsCost, unit: "usd", label: "Bagged cost", precision: 2 });
@@ -4896,7 +4896,7 @@ function computeBoardFoot(input) {
     wastePct > 0 ? `Allowance ${wastePct}% on the total - your figure. No published lumber cut-off percentage was read.` : "No allowance is added: the sheet orders what it measured until you type your own percentage."
   );
   assumptions.push(
-    input.dressed ? "Dressed sizes are the MINIMUM dressed dry sizes of the softwood standard PS 20-20 Table 3, applied because you stated the sizes typed are nominal softwood sizes. A given product can be larger; hardwood is sold on rough thickness." : "Nothing is converted to a dressed size: tick the nominal softwood option if the sizes you typed are nominal softwood sizes."
+    input.dressed ? "Dressed sizes are the MINIMUM dressed dry sizes of the softwood standard PS 20-25 Table 3, applied because you stated the sizes typed are nominal softwood sizes. A given product can be larger; hardwood is sold on rough thickness." : "Nothing is converted to a dressed size: tick the nominal softwood option if the sizes you typed are nominal softwood sizes."
   );
   assumptions.push(
     "No weight and no density: ask your supplier for the weight per board foot of the species you are buying."
@@ -6863,7 +6863,7 @@ function computeDuct(input) {
     "Velocity pressure VP = (V / 4005)², V in fpm, VP in in. wg (PNNL, standard air at 70 °F and 29.92 in Hg).",
     "Friction: loss per 100 ft = f × (100 / D in ft) × VP (Darcy), f by Colebrook iterated from a Haaland first guess (Purdue).",
     "Reynolds number with μ = 3.679 × 10⁻⁷ lb·s/ft² at 70 °F: NASA's 3.62 × 10⁻⁷ at 59 °F carried to 70 °F by Sutherland's law.",
-    Math.abs(i.eps - EPS_GALV_FT) > 1e-12 ? `Roughness ${formatNumber(i.eps, 5)} ft, typed by you.` : "Roughness 0.0003 ft (0.09 mm), galvanized steel as ASHRAE gives it (Chen et al., 2012). Another material takes its own roughness.",
+    Math.abs(i.eps - EPS_GALV_FT) > 1e-12 ? `Roughness ${formatNumber(i.eps, 5)} ft, typed by you.` : "Roughness 0.0003 ft (0.09 mm), ASHRAE's galvanized fitting value (Liu et al., 2012), assumed for straight duct. Type your own.",
     i.method === "friction" ? `The friction rate, ${limit}, is your design input: no rate is recommended here.` : `The velocity limit, ${limit}, is your design input: no velocity is recommended here.`
   ];
   if (i.mode !== "capacity") {
