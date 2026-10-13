@@ -3,7 +3,7 @@
 // at run time from vendor/engine.mjs, through the engine symbols that vendor/constants.csv lists for each withheld
 // row. Every value typed below is synthetic.
 import assert from "node:assert/strict";
-import { readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
@@ -30,6 +30,7 @@ const bases = [...new Set(exprs.map((e) => e.match(/^[A-Z_0-9]+/)[0]))].filter((
 const probe = join(tmpdir(), `tm-withheld-probe-${process.pid}.mjs`);
 writeFileSync(probe, `${engineText}\nexport const __W = { ${bases.join(", ")} };\n`);
 const { __W } = await import(pathToFileURL(probe).href);
+rmSync(probe);
 const evaluate = (e) => {
   try {
     return new Function(...bases, `return (${e});`)(...bases.map((b) => __W[b]));
